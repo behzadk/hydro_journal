@@ -38,6 +38,15 @@
     if (searchInput) {
       searchInput.addEventListener('input', onSearch);
     }
+
+    // Nav bar "New Experiment" link
+    const navNewExp = $('#nav-new-experiment');
+    if (navNewExp) {
+      navNewExp.addEventListener('click', (e) => {
+        e.preventDefault();
+        openNewExperimentDialog();
+      });
+    }
   }
 
   async function loadExperiments() {
@@ -75,11 +84,7 @@
     }
 
     const filtered = filterExperiments(searchInput ? searchInput.value : '');
-    const newExpBtn = (typeof Auth !== 'undefined' && Auth.isConfigured())
-      ? '<button id="new-experiment-btn" style="margin-bottom:1rem">+ New Experiment</button>'
-      : '';
-    contentEl.innerHTML = newExpBtn +
-      '<div class="experiment-list">' +
+    contentEl.innerHTML = '<div class="experiment-list">' +
       filtered.map(renderExperimentCard).join('') +
       '</div>';
 
@@ -90,11 +95,7 @@
       });
     });
 
-    // New experiment button
-    const newBtn = $('#new-experiment-btn', contentEl);
-    if (newBtn) {
-      newBtn.addEventListener('click', openNewExperimentDialog);
-    }
+
   }
 
   function renderExperimentCard(exp) {
