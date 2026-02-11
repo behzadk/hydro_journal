@@ -65,7 +65,7 @@
     if (!select) return;
 
     try {
-      const res = await fetch('../data/experiments.json');
+      const res = await fetch('./data/experiments.json');
       if (!res.ok) throw new Error('Failed to load');
       const data = await res.json();
       const experiments = data.experiments || [];
@@ -212,17 +212,17 @@
         addProgress(progressEl, 'Compressing photos...');
         for (let i = 0; i < selectedFiles.length; i++) {
           const seq = String(i + 1).padStart(3, '0');
-          const path = `images/${experimentId}/${date}_${seq}.jpg`;
+          const path = `docs/images/${experimentId}/${date}_${seq}.jpg`;
           const base64 = await compressImage(selectedFiles[i]);
           files.push({ path, content: base64, encoding: 'base64' });
-          imagePaths.push(path);
+          imagePaths.push(`images/${experimentId}/${date}_${seq}.jpg`);
           addProgress(progressEl, `Compressed photo ${i + 1}/${selectedFiles.length}`);
         }
       }
 
       // Step 2: Determine entry filename (handle multiple per day)
       addProgress(progressEl, 'Checking existing entries...');
-      const indexPath = `data/experiments/${experimentId}/entries/index.json`;
+      const indexPath = `docs/data/experiments/${experimentId}/entries/index.json`;
       let existingIndex = await GitHubAPI.getFileContent(token, owner, repo, indexPath);
       if (!existingIndex) {
         existingIndex = { entries: [] };
@@ -256,7 +256,7 @@
         measurements
       };
 
-      const entryPath = `data/experiments/${experimentId}/entries/${entryFilename}`;
+      const entryPath = `docs/data/experiments/${experimentId}/entries/${entryFilename}`;
       files.push({
         path: entryPath,
         content: JSON.stringify(entry, null, 2)
