@@ -1,0 +1,11 @@
+{
+  "date": "2026-02-01",
+  "time": "10:00",
+  "notes": "Initial setup. Transplanted seedlings into net pots with clay pebbles. Reservoir filled with 20L of nutrient solution. Roots just barely touching the water line.",
+  "images": [],
+  "measurements": {
+    "ph": 5.8,
+    "ec": 1.2,
+    "waterTemp": 21
+  }
+}

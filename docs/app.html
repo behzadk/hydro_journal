@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New Entry — Hydro Journal</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <meta name="theme-color" content="#2d8a4e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html" class="nav-brand">Hydro Journal</a></li>
+      <li class="nav-links">
+        <a href="app.html"><strong>+ New Entry</strong></a>
+      </li>
+      <li class="nav-links">
+        <a href="settings.html">Settings</a>
+      </li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <h2>New Diary Entry</h2>
+
+    <div id="auth-status"></div>
+
+    <form id="entry-form">
+      <!-- Experiment -->
+      <label for="experiment-select">Experiment</label>
+      <select id="experiment-select" required>
+        <option value="">Loading experiments...</option>
+      </select>
+
+      <!-- Date & Time -->
+      <div class="grid">
+        <div>
+          <label for="entry-date">Date</label>
+          <input type="date" id="entry-date" required>
+        </div>
+        <div>
+          <label for="entry-time">Time</label>
+          <input type="time" id="entry-time">
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <label for="entry-notes">Notes</label>
+      <textarea id="entry-notes" rows="4" placeholder="Observations, adjustments, etc."></textarea>
+
+      <!-- Measurements -->
+      <fieldset>
+        <legend>Measurements (optional)</legend>
+        <div class="grid">
+          <div>
+            <label for="measurement-ph">pH</label>
+            <input type="number" id="measurement-ph" step="0.1" min="0" max="14" placeholder="e.g. 6.0">
+          </div>
+          <div>
+            <label for="measurement-ec">EC (mS/cm)</label>
+            <input type="number" id="measurement-ec" step="0.1" min="0" placeholder="e.g. 1.8">
+          </div>
+          <div>
+            <label for="measurement-temp">Water Temp (°C)</label>
+            <input type="number" id="measurement-temp" step="0.5" min="0" max="50" placeholder="e.g. 22">
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Photos -->
+      <fieldset>
+        <legend>Photos</legend>
+        <input type="file" id="photo-input" accept="image/*" multiple>
+        <small>Photos will be compressed to ~200KB before upload.</small>
+        <div id="photo-previews" class="photo-preview-area"></div>
+      </fieldset>
+
+      <!-- Submit -->
+      <button type="submit" id="submit-btn">Submit Entry</button>
+      <div id="submit-progress" class="submit-progress"></div>
+    </form>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script src="js/github-api.js"></script>
+  <script src="js/submit.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>

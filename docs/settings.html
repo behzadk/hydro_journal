@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Settings — Hydro Journal</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <meta name="theme-color" content="#2d8a4e">
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html" class="nav-brand">Hydro Journal</a></li>
+      <li class="nav-links">
+        <a href="app.html">+ New Entry</a>
+      </li>
+      <li class="nav-links">
+        <a href="settings.html"><strong>Settings</strong></a>
+      </li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <h2>Settings</h2>
+
+    <div id="token-status"></div>
+
+    <form id="settings-form">
+      <label for="github-owner">GitHub Username</label>
+      <input type="text" id="github-owner" placeholder="your-username" autocomplete="username">
+
+      <label for="github-repo">Repository Name</label>
+      <input type="text" id="github-repo" placeholder="hydro_journal" value="hydro_journal">
+
+      <label for="github-token">Personal Access Token</label>
+      <input type="password" id="github-token" placeholder="github_pat_...">
+      <small>Fine-grained PAT with <strong>Contents: Read and Write</strong> scope for this repo only.</small>
+
+      <div class="grid" style="margin-top: 1rem;">
+        <button type="submit" id="save-btn">Save &amp; Test</button>
+        <button type="button" id="clear-btn" class="secondary">Clear Token</button>
+      </div>
+    </form>
+
+    <details style="margin-top: 2rem;">
+      <summary>How to create a Personal Access Token</summary>
+      <ol>
+        <li>Go to <strong>GitHub Settings &rarr; Developer settings &rarr; Personal access tokens &rarr; Fine-grained tokens</strong></li>
+        <li>Click <strong>Generate new token</strong></li>
+        <li>Name it something like "Hydro Journal"</li>
+        <li>Set expiration (e.g. 90 days or custom)</li>
+        <li>Under <strong>Repository access</strong>, select <strong>Only select repositories</strong> and choose your hydro_journal repo</li>
+        <li>Under <strong>Permissions &rarr; Repository permissions</strong>, set <strong>Contents</strong> to <strong>Read and Write</strong></li>
+        <li>Click <strong>Generate token</strong> and copy it</li>
+        <li>Paste the token above and click <strong>Save &amp; Test</strong></li>
+      </ol>
+    </details>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script>
+    (function () {
+      const ownerInput = document.getElementById('github-owner');
+      const repoInput = document.getElementById('github-repo');
+      const tokenInput = document.getElementById('github-token');
+      const statusEl = document.getElementById('token-status');
+      const form = document.getElementById('settings-form');
+      const clearBtn = document.getElementById('clear-btn');
+
+      // Load existing values
+      ownerInput.value = Auth.getOwner();
+      repoInput.value = Auth.getRepo();
+      if (Auth.getToken()) {
+        tokenInput.placeholder = '••••••••• (saved)';
+      }
+
+      updateStatus();
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const saveBtn = document.getElementById('save-btn');
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Testing...';
+
+        if (ownerInput.value) Auth.setOwner(ownerInput.value);
+        if (repoInput.value) Auth.setRepo(repoInput.value);
+        if (tokenInput.value) Auth.setToken(tokenInput.value);
+
+        const result = await Auth.validate();
+        if (result.valid) {
+          statusEl.innerHTML = `<div class="token-status connected">Connected as <strong>${result.user}</strong></div>`;
+          tokenInput.value = '';
+          tokenInput.placeholder = '••••••••• (saved)';
+        } else {
+          statusEl.innerHTML = `<div class="token-status disconnected">Connection failed: ${result.error}</div>`;
+        }
+
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'Save & Test';
+      });
+
+      clearBtn.addEventListener('click', () => {
+        Auth.clearToken();
+        tokenInput.value = '';
+        tokenInput.placeholder = 'github_pat_...';
+        updateStatus();
+      });
+
+      async function updateStatus() {
+        if (!Auth.isConfigured()) {
+          statusEl.innerHTML = '<div class="token-status disconnected">No token configured</div>';
+          return;
+        }
+        statusEl.innerHTML = '<div class="token-status connected">Checking connection...</div>';
+        const result = await Auth.validate();
+        if (result.valid) {
+          statusEl.innerHTML = `<div class="token-status connected">Connected as <strong>${result.user}</strong></div>`;
+        } else {
+          statusEl.innerHTML = `<div class="token-status disconnected">${result.error}</div>`;
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

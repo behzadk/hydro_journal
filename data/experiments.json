@@ -1,0 +1,18 @@
+{
+  "experiments": [
+    {
+      "id": "tomato-dwc-2026",
+      "name": "Tomato DWC Trial",
+      "description": "Cherry tomatoes in deep water culture with clay pebble media.",
+      "startDate": "2026-02-01",
+      "status": "active"
+    },
+    {
+      "id": "basil-kratky-2026",
+      "name": "Basil Kratky Method",
+      "description": "Sweet basil grown using passive Kratky method in mason jars.",
+      "startDate": "2026-02-05",
+      "status": "active"
+    }
+  ]
+}

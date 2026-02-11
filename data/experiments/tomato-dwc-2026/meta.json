@@ -1,0 +1,10 @@
+{
+  "id": "tomato-dwc-2026",
+  "name": "Tomato DWC Trial",
+  "description": "Cherry tomatoes in deep water culture with clay pebble media.",
+  "startDate": "2026-02-01",
+  "status": "active",
+  "system": "Deep Water Culture (DWC)",
+  "plants": ["Cherry Tomato — Sweet 100"],
+  "nutrients": "General Hydroponics Flora Series"
+}

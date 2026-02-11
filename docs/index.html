@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hydro Journal</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <meta name="theme-color" content="#2d8a4e">
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html" class="nav-brand">Hydro Journal</a></li>
+      <li class="nav-links">
+        <a href="app.html">+ New Entry</a>
+      </li>
+      <li class="nav-links">
+        <a href="settings.html">Settings</a>
+      </li>
+    </ul>
+  </nav>
+
+  <main class="container">
+    <div class="search-bar" id="search-bar">
+      <input type="search" id="search-input" placeholder="Search experiments...">
+    </div>
+    <div id="content" class="loading">Loading experiments...</div>
+  </main>
+
+  <!-- New Experiment Dialog -->
+  <dialog id="new-experiment-dialog">
+    <article>
+      <h3>New Experiment</h3>
+      <form id="new-experiment-form">
+        <label for="exp-name">Name</label>
+        <input type="text" id="exp-name" placeholder="e.g. Lettuce NFT Trial" required>
+
+        <label for="exp-id">ID (slug)</label>
+        <input type="text" id="exp-id" placeholder="e.g. lettuce-nft-2026" required pattern="[a-z0-9\-]+">
+        <small>Lowercase letters, numbers, and hyphens only.</small>
+
+        <label for="exp-description">Description</label>
+        <textarea id="exp-description" rows="2" placeholder="Brief description of the experiment"></textarea>
+
+        <label for="exp-start">Start Date</label>
+        <input type="date" id="exp-start" required>
+
+        <div class="grid">
+          <button type="submit">Create Experiment</button>
+          <button type="button" class="secondary" id="cancel-experiment">Cancel</button>
+        </div>
+        <div id="new-exp-status"></div>
+      </form>
+    </article>
+  </dialog>
+
+  <script src="js/auth.js"></script>
+  <script src="js/github-api.js"></script>
+  <script src="js/site.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
+    }
+  </script>
+</body>
+</html>

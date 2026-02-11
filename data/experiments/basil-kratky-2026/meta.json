@@ -1,0 +1,10 @@
+{
+  "id": "basil-kratky-2026",
+  "name": "Basil Kratky Method",
+  "description": "Sweet basil grown using passive Kratky method in mason jars.",
+  "startDate": "2026-02-05",
+  "status": "active",
+  "system": "Kratky (passive)",
+  "plants": ["Sweet Basil — Genovese"],
+  "nutrients": "MasterBlend 4-18-38"
+}
