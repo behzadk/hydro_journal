@@ -1,6 +1,6 @@
-/* sw.js — Service worker: cache app shell, network-first for data/images */
+/* sw.js — Service worker: network-first for app shell + data, cache-first for CDN/icons */
 
-const CACHE_NAME = 'hydro-journal-v1';
+const CACHE_NAME = 'hydro-journal-v2';
 
 const APP_SHELL = [
   './',
@@ -25,7 +25,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting();
 });
 
-// Activate: clean up old caches
+// Activate: clean up old caches, take control immediately
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
@@ -39,7 +39,7 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Fetch: network-first for data/images, cache-first for app shell
+// Fetch strategy
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
@@ -47,14 +47,14 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   if (url.hostname === 'api.github.com') return;
 
-  // Data and images: network-first
-  if (url.pathname.includes('/data/') || url.pathname.includes('/images/')) {
-    event.respondWith(networkFirst(event.request));
+  // CDN resources and icons: cache-first (they don't change)
+  if (url.hostname !== self.location.hostname || url.pathname.match(/\/icons\//)) {
+    event.respondWith(cacheFirst(event.request));
     return;
   }
 
-  // CDN resources and app shell: cache-first
-  event.respondWith(cacheFirst(event.request));
+  // Everything else (app shell, data, images): network-first
+  event.respondWith(networkFirst(event.request));
 });
 
 async function cacheFirst(request) {
