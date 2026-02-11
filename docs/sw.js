@@ -1,6 +1,6 @@
 /* sw.js — Service worker: network-first for app shell + data, cache-first for CDN/icons */
 
-const CACHE_NAME = 'hydro-journal-v2';
+const CACHE_NAME = 'hydro-journal-v3';
 
 const APP_SHELL = [
   './',

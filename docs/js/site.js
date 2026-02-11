@@ -3,19 +3,8 @@
 (function () {
   'use strict';
 
-  // Base path for data files — works both on GitHub Pages and locally
-  const BASE = getBasePath();
-
-  function getBasePath() {
-    // When served from /docs/ on GitHub Pages, data is at ../data/
-    // When opened locally as file://, same relative path works
-    const loc = window.location;
-    if (loc.pathname.includes('/docs/') || loc.pathname.endsWith('/docs/index.html')) {
-      return '../';
-    }
-    // Fallback for root-level serving
-    return '../';
-  }
+  // Base path for data files — data and images now live inside docs/
+  const BASE = './';
 
   const $ = (sel, el) => (el || document).querySelector(sel);
   const $$ = (sel, el) => [...(el || document).querySelectorAll(sel)];
@@ -419,7 +408,7 @@
 
     try {
       // 1. Read current experiments.json
-      let expData = await GitHubAPI.getFileContent(token, owner, repo, 'data/experiments.json');
+      let expData = await GitHubAPI.getFileContent(token, owner, repo, 'docs/data/experiments.json');
       if (!expData) expData = { experiments: [] };
 
       // Check for duplicate ID
@@ -442,9 +431,9 @@
       };
 
       const files = [
-        { path: 'data/experiments.json', content: JSON.stringify(expData, null, 2) },
-        { path: `data/experiments/${id}/meta.json`, content: JSON.stringify(meta, null, 2) },
-        { path: `data/experiments/${id}/entries/index.json`, content: JSON.stringify({ entries: [] }, null, 2) }
+        { path: 'docs/data/experiments.json', content: JSON.stringify(expData, null, 2) },
+        { path: `docs/data/experiments/${id}/meta.json`, content: JSON.stringify(meta, null, 2) },
+        { path: `docs/data/experiments/${id}/entries/index.json`, content: JSON.stringify({ entries: [] }, null, 2) }
       ];
 
       // 4. Commit
