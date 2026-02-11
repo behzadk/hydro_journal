@@ -13,6 +13,13 @@
       "description": "Sweet basil grown using passive Kratky method in mason jars.",
       "startDate": "2026-02-05",
       "status": "active"
+    },
+    {
+      "id": "butterleaf-2026",
+      "name": "Butterleaf",
+      "description": "Butterleaf lettuce being grown in space box",
+      "startDate": "2026-01-23",
+      "status": "active"
     }
   ]
 }
